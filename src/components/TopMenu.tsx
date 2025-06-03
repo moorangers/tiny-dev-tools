@@ -33,13 +33,26 @@ export default function TopMenu() {
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
           {/* Logo */}
-          <Box display="flex" alignItems="center">
+          <Box
+            component={Link}
+            href="/"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              textDecoration: 'none',
+              cursor: 'pointer',
+              color: theme.palette.text.primary,
+              '&:hover': {
+                opacity: 0.8,
+              },
+            }}
+          >
             <TerminalRoundedIcon sx={{ fontSize: 60, mr: 1 }} />
             <Typography
               variant="h6"
               component="div"
               fontWeight="bold"
-              sx={{ color: theme.palette.text.primary }}
+              sx={{ color: 'text.primary' }}
             >
               Tiny Dev Tools
             </Typography>
@@ -50,7 +63,7 @@ export default function TopMenu() {
             {[
               { label: 'Home', href: '/' },
               { label: 'Tools', href: '/tiny-tools' },
-              { label: 'About', href: '/about' },
+              // { label: 'About', href: '/about' },
             ].map((item) => (
               <MuiLink
                 key={item.href}
@@ -88,12 +101,8 @@ export default function TopMenu() {
                 {item.label}
               </MuiLink>
             ))}
-          </Stack>
-
-          {/* Right side: Theme toggle */}
-          <Box>
             <ThemeToggle />
-          </Box>
+          </Stack>
         </Toolbar>
       </Container>
     </AppBar>

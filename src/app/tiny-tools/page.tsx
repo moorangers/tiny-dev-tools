@@ -1,12 +1,21 @@
-import { Container, Typography } from '@mui/material';
+'use client';
 
-export default function HomePage() {
+import { Box, Typography, Container } from '@mui/material';
+import ToolGrid from '@/components/ToolGrid';
+
+export default function TinyToolsPage() {
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
-      <Typography variant="h4" gutterBottom>
-        🧰 Welcome to Tiny Dev Tools
-      </Typography>
-      <Typography>เลือก tool จากเมนูเพื่อเริ่มใช้งาน</Typography>
+      <Box textAlign="center" mb={4}>
+        <Typography variant="h3" fontWeight={700}>
+          Tiny Dev Tools 🧰
+        </Typography>
+        <Typography variant="subtitle1" color="text.secondary">
+          Small developer tools to make your work easier.
+        </Typography>
+      </Box>
+
+      <ToolGrid />
     </Container>
   );
 }

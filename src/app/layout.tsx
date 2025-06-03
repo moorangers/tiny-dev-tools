@@ -1,15 +1,9 @@
-import { Metadata } from 'next';
-import TopMenu from '@/components/TopMenu';
-import Footer from '@/components/Footer';
-import ThemeRegistry from '../providers/providers';
+import ThemeRegistry from '@/providers/ThemeRegistry';
 import { notoSans } from '@/styles/fonts';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Tiny Dev Tools',
-  description: 'A collection of small developer tools',
-  creator: 'MooRanger',
-  icons: '',
-  manifest: '',
+  description: 'Small dev utilities',
 };
 
 export default function RootLayout({
@@ -18,13 +12,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={notoSans.variable}>
+    <html lang="en" className={notoSans.className}>
       <body>
-        <ThemeRegistry>
-          <TopMenu />
-          <main style={{ minHeight: 'calc(100vh - 120px)' }}>{children}</main>
-          <Footer />
-        </ThemeRegistry>
+        <ThemeRegistry>{children}</ThemeRegistry>
       </body>
     </html>
   );

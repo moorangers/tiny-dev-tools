@@ -1,49 +1,53 @@
 'use client';
 
-import { createTheme } from '@mui/material';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import type { PaletteMode } from '@mui/material';
 
-type ThemeMode = 'light' | 'dark';
-
-interface ThemeContextProps {
-  mode: ThemeMode;
+type ThemeContextType = {
+  mode: PaletteMode;
   toggleTheme: () => void;
-}
+};
 
-const ThemeContext = createContext<ThemeContextProps>({
+const ThemeContext = createContext<ThemeContextType>({
   mode: 'light',
   toggleTheme: () => {},
 });
 
-export const ThemeProviderContext = ({
+export const useThemeContext = () => useContext(ThemeContext);
+
+export function ThemeProviderContext({
   children,
 }: {
   children: React.ReactNode;
-}) => {
-  const [mode, setMode] = useState<ThemeMode>('light');
+}) {
+  const [mode, setMode] = useState<PaletteMode | null>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem('theme') as ThemeMode;
-    if (saved === 'dark') {
-      setMode('dark');
-      document.documentElement.classList.add('dark');
+    const stored = localStorage.getItem('theme-mode') as PaletteMode | null;
+    if (stored) {
+      setMode(stored);
+    } else {
+      const systemPrefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)',
+      ).matches;
+      setMode(systemPrefersDark ? 'dark' : 'light');
     }
   }, []);
 
   const toggleTheme = () => {
-    const nextMode = mode === 'light' ? 'dark' : 'light';
-    setMode(nextMode);
-    localStorage.setItem('theme', nextMode);
-
-    if (nextMode === 'dark') document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
+    setMode((prev) => {
+      const newMode = prev === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme-mode', newMode);
+      return newMode;
+    });
   };
+
+  // 🛑 ป้องกัน render จนกว่าจะรู้ mode (null)
+  if (!mode) return null;
 
   return (
     <ThemeContext.Provider value={{ mode, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
-};
-
-export const useThemeContext = () => useContext(ThemeContext);
+}
